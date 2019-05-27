@@ -1,0 +1,5 @@
+baseURL = "http://blog.jsie.de/"
+languageCode = "en-us"
+title = "blog"
+theme = "hugo_theme_pickles"
+
