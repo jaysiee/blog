@@ -1,4 +1,5 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = ""
 theme = "pickles"
+copyright = "&copy; Copyright notice"
