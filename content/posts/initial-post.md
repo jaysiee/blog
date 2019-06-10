@@ -168,7 +168,7 @@ After initializing the Helm provider we can finally deploy Traefik and ExternalD
 LoadBalancer
 
 
-### Installating ExternalDNS
+### Installing ExternalDNS
 
 > This section describes the purpose of the following files: `helm_externaldns.tf`
 
