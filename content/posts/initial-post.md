@@ -1,5 +1,5 @@
 ---
-title: "Getting started with Terraform, Linkerd, Treafik, ExternalDNS and OpenFaaS on DigitalOcean, Part 1"
+title: "Getting started with Terraform, Linkerd, Traefik, ExternalDNS and OpenFaaS on DigitalOcean, Part 1"
 date: 2019-06-16T12:00:00+02:00
 draft: false
 ---
