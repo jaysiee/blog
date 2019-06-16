@@ -1,5 +1,5 @@
 ---
-title: "Initial Post"
+title: "Getting started with Terraform, Linkerd, Treafik, ExternalDNS and OpenFaaS on DigitalOcean, Part 1"
 date: 2019-05-27T20:48:00+02:00
 draft: false
 ---
@@ -244,7 +244,7 @@ Dependending on which purpose you are using this Kubernetes cluster for, you mig
 
 These are all the basic infrastructure components you need to get started. You have set up a Kubernetes cluster automatically and repeatably. The cluster has an Ingress controller which automatically creates routes to your applications and secures them using TLS. All components within your cluster are being meshed which makes them use mutual TLS and gives you detailed insights into the communication between each service. 
 
-This is probably not a bad time to take a break, as this are quite a number of different tools already. However, all this effort only really makes sense when you deploy your own functions and services to the cluster that perform some kind of business logic. This is what we are going to tackle in the next part of the tutorial. We will look into the installation and first steps with OpenFaaS and how to use Linkerd to understand what is happening in your cluster.
+This is probably not a bad time to take a break as these are quite a number of different tools already. Of course all this trouble only make sense when you have some application that runs your own business logic. In the next part of the tutorial we will look into your first steps with OpenFaaS and how to use Linkerd to understand what is happening in your cluster. 
 
 [cncf]: https://www.cncf.io/
 [cncf-landscape]: https://github.com/cncf/landscape
