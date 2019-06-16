@@ -1,6 +1,6 @@
 ---
 title: "Getting started with Terraform, Linkerd, Treafik, ExternalDNS and OpenFaaS on DigitalOcean, Part 1"
-date: 2019-05-27T20:48:00+02:00
+date: 2019-06-16T12:00:00+02:00
 draft: false
 ---
 
@@ -8,9 +8,9 @@ draft: false
 
 With the rising popularity of serverless computing there is a growing demand for Cloud-provider independent serverless solutions allowing teams to benefit from modern architectural software patterns regardless of their technical foundation. Luckily there is a wide array of solutions to pick from nowadays. The [Cloud Native Computing Foundation][cncf] does a great job mapping out all of them in their [CNCF landscape][cncf-landscape]. A good starting point to dive into the serverless ecosystem is [OpenFaaS][tool-openfaas] - a user-friendly project with an active open-source community.
 
-## What is the goal of this tutorial?
+## What is the goal of the tutorial?
 
-This tutorial explains how to setup OpenFaaS on a DigitalOcean managed Kubernetes cluster using Terraform. The resulting cluster will be using Traefik as an Ingress Controller, ExternalDNS for automatic DNS configuration, and Linkerd as a service mesh. After finishing the tutorial you will be able to automatically provision a Kubernetes cluster with these tools installed. You will be able to add functions to your OpenFaas installation and expose them to the internet. The first part of the tutorial will focus on the provisioning of the Kubernetes cluster and the setup of the infrastructure components.
+This tutorial explains how to setup OpenFaaS on a DigitalOcean managed Kubernetes cluster using Terraform. The resulting cluster will be using Traefik as an Ingress Controller, ExternalDNS for automatic DNS configuration, and Linkerd as a service mesh. After finishing the tutorial you will be able to automatically provision a Kubernetes cluster with these tools installed. You will be able to add functions to your OpenFaas installation and expose them to the internet. The first part of the tutorial will focus on the provisioning of the Kubernetes cluster and on the setup of the infrastructure components.
 
 The goal of this tutorial is not to set up all components in a production-ready fashion. Instead it will give you an environment with reasonable defaults that allows you to further dive into Kubernetes and the applications running on it.
 
@@ -222,7 +222,7 @@ We will use the [ExternalDNS Helm chart][helm-externaldns] to install the applic
 
 Once again this is pretty simple and straightforward. We just need to provide our credentials for DigitalOcean and when installed to our cluster, ExternalDNS will take care of the rest. After the DNS entries have been configured (which you can check in your DigitalOcean account) you will be able to access all applications in your cluster with an `Ingress`, e.g.:
 
-    curl -I traefik-dashboard.sample.com
+    curl -I traefik.sample.com
 
 ## Cleaning up after you are done
 
