@@ -8,7 +8,7 @@ draft: false
 
 With the rising popularity of serverless computing there is a growing demand for Cloud-provider independent serverless solutions allowing teams to benefit from modern architectural software patterns regardless of their technical foundation. Luckily there is a wide array of solutions to pick from nowadays. The [Cloud Native Computing Foundation][cncf] does a great job mapping out all of them in their [CNCF landscape][cncf-landscape]. A good starting point to dive into the serverless ecosystem is [OpenFaaS][tool-openfaas] - a user-friendly project with an active open-source community.
 
-## What is the goal of the tutorial?
+## What's the goal of this tutorial?
 
 This tutorial explains how to setup OpenFaaS on a DigitalOcean managed Kubernetes cluster using Terraform. The resulting cluster will be using Traefik as an Ingress Controller, ExternalDNS for automatic DNS configuration, and Linkerd as a service mesh. After finishing the tutorial you will be able to automatically provision a Kubernetes cluster with these tools installed. You will be able to add functions to your OpenFaas installation and expose them to the internet. The first part of the tutorial will focus on the provisioning of the Kubernetes cluster and on the setup of the infrastructure components.
 
@@ -191,15 +191,15 @@ Since we decided to use Linkerd auto-injection in the default namespace (where T
 
       ingress.kubernetes.io/custom-request-headers: l5d-dst-override:traefik-dashboard.default.svc.cluster.local:80  
 
-Now we can access our applications by querying the public IP address of the load balancer with a valid [Host][header-host] header set (e.g. via `curl`). We need to add DNS configuration for our applications as we do not want to access the load balancer via the public IP address. That is why we will use ExternalDNS to automatically create DNS entries pointing to our load balancer. This will be explained in the next section.
+Now we could access our applications by navigating to the public IP address of the load balancer with a valid [Host][header-host] header (e.g. via `curl`). Obviously, this is not where we stop. We need to add DNS configuration for applications in our cluster to automatically create DNS entries pointing to our load balancer. For this purpose we will use ExternalDNS which will be explained in the next section.
 
 ### Installing ExternalDNS
 
 > This section describes the purpose of the following files: `helm_externaldns.tf`
 
-We now have a public IP address pointing to our Kubernetes cluster. We just need to configure our DNS entries to point to that IP address and we're ready to go. This is where [ExternalDNS][tool-externaldns] comes into play. This tool retrieves a list of resources in our cluster (e.g. `Services` and `Ingresses`) and configures external DNS providers with the desired DNS entries. 
+We now have a public IP address pointing to our Kubernetes cluster. We just need to configure our DNS entries to point to that IP address and we're ready to go. This is where [ExternalDNS][tool-externaldns] comes into play. This tool retrieves a list of resources in our cluster (e.g. `Service` and `Ingress` objects) and configures external DNS providers with the desired DNS entries. 
 
-> **Note**: The ExternalDNS provider for DigitalOcean is listed as "alpha" but it performed without any problems in our trials. 
+> **Note**: The ExternalDNS provider for DigitalOcean is listed as "alpha" but it performed without any problems in our tests. 
 
 We will use the [ExternalDNS Helm chart][helm-externaldns] to install the application in our cluster: 
 
@@ -220,7 +220,7 @@ We will use the [ExternalDNS Helm chart][helm-externaldns] to install the applic
         ...
     }
 
-Once again this is pretty simple and straightforward. We just need to provide our credentials for DigitalOcean and when installed to our cluster, ExternalDNS will take care of the rest. After the DNS entries have been configured (which you can check in your DigitalOcean account) you will be able to access all applications in your cluster with an `Ingress`, e.g.:
+Once again this is pretty simple and straightforward. We just need to provide our credentials for DigitalOcean and when installed to our cluster ExternalDNS will take care of the rest. After the DNS entries have been configured (which you can check in your DigitalOcean account) you will be able to access all applications in your cluster with an `Ingress`, e.g.:
 
     curl -I traefik.sample.com
 
