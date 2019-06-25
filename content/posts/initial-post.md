@@ -59,13 +59,13 @@ After telling Terraform to set up your cluster you have some time to dive into e
 
 ### Initializing the DigitalOcean Provider
 
-> This section refers to: [do_provider.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/do_provider.tf)
+> This section refers to: [do_provider.tf](https://github.com/pecan-pie/trainingscenter/blob/master/do_provider.tf)
 
 To get everything rolling we need to initialize the Terraform [DigitalOcean provider][do-provider]. This provider is used by resources built on DigitalOcean infrastructure (e.g. resources to set up the Kubernetes cluster and DNS entries).
 
 ### Provisioning a Digital Ocean Kubernetes cluster
 
-> This section refers to: [do_kubernetes.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/do_kubernetes.tf)
+> This section refers to: [do_kubernetes.tf](https://github.com/pecan-pie/trainingscenter/blob/master/do_kubernetes.tf)
 
 The first component to set up is the Kubernetes cluster. This is done using the [DigitalOcean Kubernetes resource][do-res-kubernetes]. In case you require other parameters, e.g. a different region, you can adapt these values to your liking:
 
@@ -85,7 +85,7 @@ Finally, this is also where the configuration file for the new Kubernetes cluste
 
 ### Creating DigitalOcean Domain entry
 
-> This section refers to: [do_domain.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/do_domain.tf)
+> This section refers to: [do_domain.tf](https://github.com/pecan-pie/trainingscenter/blob/master/do_domain.tf)
 
 The `digitalocean_domain` resource creates the necessary domain item on DigitalOcean. 
 
@@ -97,7 +97,7 @@ This item holds the DNS entries required for domain resolution and SSL verificat
 
 ### Setting up Linkerd
 
-> This section refers to: [linkerd.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/linkerd.tf)
+> This section refers to: [linkerd.tf](https://github.com/pecan-pie/trainingscenter/blob/master/linkerd.tf)
 
 After the Kubernetes cluster has been set up succesfully we will add [Linkerd][tool-linkerd] as service mesh. To quote the Linkerd documentation it "makes running services [...] safer by giving you runtime debugging, observability, reliability, and security — all without requiring any changes to your code". Linkerd does this by injecting sidecar containers with your application pods which intercept incoming and outgoing communication. These sidecar containers add features such as encryption and telemetry to your applications. The [Linkerd architecture documentation][linkerd-architecture] does a good job explaining these concepts in detail.
 
@@ -121,7 +121,7 @@ After these commands are finished running Linkerd is ready to use and we can mov
 
 ### Preparing Helm
 
-> This section refers to:  [helm_setup.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/helm_setup.tf)
+> This section refers to:  [helm_setup.tf](https://github.com/pecan-pie/trainingscenter/blob/master/helm_setup.tf)
 
 To install applications in our cluster we are using Helm as it is a popular choice for package mangement in the Kubernetes ecosystem. Unfortunately the Terraform Helm provider currently only supports a Tiller-based approach, i.e. running a cluster-side component that manages the lifecycle of our deployed applications. This approach will change with Helm Version 3 which is not stable as of today. 
 
@@ -163,7 +163,7 @@ After initializing the Helm provider we can finally deploy Traefik and ExternalD
 
 ### Installing Traefik
 
-> This section describes the purpose of the following files: [helm_traefik.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/helm_traefik.tf), [traefik-values.yml](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/values-traefik.yml)
+> This section describes the purpose of the following files: [helm_traefik.tf](https://github.com/pecan-pie/trainingscenter/blob/master/helm_traefik.tf), [values-traefik.yml](https://github.com/pecan-pie/trainingscenter/blob/master/values-traefik.yml)
 
 Each Kubernetes cluster that requires external access needs an [Ingress controller][kubernetes-ingress]. We will use Traefik for this example as it offers a convenient way of handling SSL certificates for you. We install Traefik using its [Helm chart][helm-traefik]. All run-specific parameters will be set through Terraform, the remaining parameters will be set through a YAML-file.
 
@@ -195,7 +195,7 @@ Now we could access our applications by navigating to the public IP address of t
 
 ### Installing ExternalDNS
 
-> This section describes the purpose of the following files: [helm_externaldns.tf](https://github.com/pecan-pie/trainingscenter/blob/refactoring/tutorial-cleanup/helm_externaldns.tf)
+> This section describes the purpose of the following files: [helm_externaldns.tf](https://github.com/pecan-pie/trainingscenter/blob/master/helm_externaldns.tf)
 
 We now have a public IP address pointing to our Kubernetes cluster. We just need to configure our DNS entries to point to that IP address and we're ready to go. This is where [ExternalDNS][tool-externaldns] comes into play. This tool retrieves a list of resources in our cluster (e.g. `Service` and `Ingress` objects) and configures external DNS providers with the desired DNS entries. 
 
@@ -226,7 +226,7 @@ Once again this is pretty simple and straightforward. We just need to provide ou
 
 ## Cleaning up after you are done
 
-Dependending on which purpose you are using this Kubernetes cluster for, you might want to tear it down after you are done working with it (e.g. because you are just using it for development purposes). This can simply be done via Terraform using the `destroy` command:
+Dependending on which purpose you are using this Kubernetes cluster for, you might want to tear it down after you are done working with it (mostly likely because you are just using it for development purposes). This can simply be done via Terraform using the `destroy` command:
 
     terraform destroy -var do_token=${DO_PAT} -var acme_mail=recipient@sample.com -var domain=sample.com
 
@@ -244,7 +244,7 @@ Dependending on which purpose you are using this Kubernetes cluster for, you mig
 
 These are all the basic infrastructure components you need to get started. You have set up a Kubernetes cluster automatically and repeatably. The cluster has an Ingress controller which automatically creates routes to your applications and secures them using TLS. All components within your cluster are being meshed which makes them use mutual TLS and gives you detailed insights into the communication between each service. 
 
-This is probably not a bad time to take a break as these are quite a number of different tools already. Of course all this trouble only make sense when you have some application that runs your own business logic. In the next part of the tutorial we will look into your first steps with OpenFaaS and how to use Linkerd to understand what is happening in your cluster. 
+This is probably not a bad time to take a break as these are quite a number of different tools already. Of course all this trouble only make sense when you have an application that does something meaningful. In the next part of the tutorial we will look into your first steps with OpenFaaS to achieve this and how to use Linkerd to better understand what is happening in your cluster. 
 
 [cncf]: https://www.cncf.io/
 [cncf-landscape]: https://github.com/cncf/landscape
