@@ -187,17 +187,17 @@ After the Traefik installation is complete (i.e. all Pods are ready and the Load
 
 > **Note:** Traefik will issue certificates for each subdomain separately based on the Ingress objects in your Kubernetes cluster. We will not use wildcard certificates. By default the script uses the Let's Encrypt staging environment to avoid rate limiting issues. If you want to issue valid SSL certificates change the parameter `staging` to false in your `traefik-values.yml`.
 
-Since we decided to use Linkerd auto-injection in the default namespace (where Traefik will be installed) we also need to take some [precautions][linkerd-traefik] for it to work properly with Traefik. We have to add the `l5d-dst-override` header for each request arriving at Traefik. This header will let the Linkerd proxies know where to send requests. This can be done by adding the following annotation to each `Ingress` object. The example shows the annotation used by the Traefik dashboard (note: you need to specify host *and* port):
+Since we decided to use Linkerd auto-injection in the default namespace (where Traefik will be installed) we also need to take some [precautions][linkerd-traefik] for it to work properly with Traefik. We have to add the `l5d-dst-override` header for each request arriving at Traefik. This header will let the Linkerd proxies know where to route requests. This can be done by adding the following annotation to each `Ingress` object. The example shows the annotation used by the Traefik dashboard (note: you need to specify host *and* port):
 
       ingress.kubernetes.io/custom-request-headers: l5d-dst-override:traefik-dashboard.default.svc.cluster.local:80  
 
-Now we could access our applications by navigating to the public IP address of the load balancer with a valid [Host][header-host] header (e.g. via `curl`). Obviously, this is not where we stop. We need to add DNS configuration for applications in our cluster to automatically create DNS entries pointing to our load balancer. For this purpose we will use ExternalDNS which will be explained in the next section.
+Now we could access our applications by navigating to the public IP address of the load balancer with a valid [Host][header-host] header set (e.g. via `curl`). Obviously, we are not done here. We need to add DNS configuration for applications in our cluster to automatically create public DNS entries pointing to our load balancer. For this purpose we will use ExternalDNS which will be explained in the next section.
 
 ### Installing ExternalDNS
 
 > This section describes the purpose of the following files: [helm_externaldns.tf](https://github.com/pecan-pie/trainingscenter/blob/master/helm_externaldns.tf)
 
-We now have a public IP address pointing to our Kubernetes cluster. We just need to configure our DNS entries to point to that IP address and we're ready to go. This is where [ExternalDNS][tool-externaldns] comes into play. This tool retrieves a list of resources in our cluster (e.g. `Service` and `Ingress` objects) and configures external DNS providers with the desired DNS entries. 
+We now have a public IP address pointing to our Kubernetes cluster. We just need to configure our DNS entries to point to that IP address and we're ready to go. This is where [ExternalDNS][tool-externaldns] comes into play. This tool retrieves a list of resources in our cluster (e.g. `Service` or `Ingress` objects) and configures external DNS providers with the desired DNS entries. 
 
 > **Note**: The ExternalDNS provider for DigitalOcean is listed as "alpha" but it performed without any problems in our tests. 
 
