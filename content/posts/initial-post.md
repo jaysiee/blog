@@ -101,7 +101,7 @@ This item holds the DNS entries required for domain resolution and SSL verificat
 
 After the Kubernetes cluster has been set up succesfully we will add [Linkerd][tool-linkerd] as service mesh. To quote the Linkerd documentation it "makes running services [...] safer by giving you runtime debugging, observability, reliability, and security — all without requiring any changes to your code". Linkerd does this by injecting sidecar containers with your application pods which intercept incoming and outgoing communication. These sidecar containers add features such as encryption and telemetry to your applications. The [Linkerd architecture documentation][linkerd-architecture] does a good job explaining these concepts in detail.
 
-We add Linkerd functionality to our Kubernetes cluster by using [auto-injection][linkerd-auto-inject] which can be enabled by annotating namespaces accordingly. This means that all pods deployed in our cluster will automatically be provided with a Linkerd sidecar container. The installation of Linkerd is based on the [documentation][linkerd-setup]:
+We add Linkerd functionality to our Kubernetes cluster by using [auto-injection][linkerd-auto-inject] which can be enabled by annotating namespaces accordingly. This means that all pods deployed in our cluster will automatically be provisioned with a Linkerd sidecar container. The installation of Linkerd is based on the [documentation][linkerd-setup]:
 
     linkerd install --proxy-auto-inject --skip-outbound-ports 4222 --skip-inbound-ports 4222 | kubectl apply -f -
 
